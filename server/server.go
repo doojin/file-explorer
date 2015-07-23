@@ -40,7 +40,7 @@ func (server *Server) LoadJSONConfig(filename string) {
 	json.Unmarshal(fileContent, &server.Config)
 }
 
-// LoadYAMLConfig fills server config with values from YAMl file
+// LoadYAMLConfig fills server config with values from YAML file
 func (server *Server) LoadYAMLConfig(filename string) {
 	fileContent := server.readConfig(filename)
 	yaml.Unmarshal(fileContent, &server.Config)
