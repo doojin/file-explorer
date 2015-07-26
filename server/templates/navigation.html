@@ -1,0 +1,41 @@
+{{ define "Navigation" }}
+<nav class="top-bar">
+    <ul class="title-area">
+        <li class="name">
+            <h1><a href="/">File Explorer Project</a></h1>
+        </li>
+    </ul>
+
+    <section class="top-bar-section">
+        <ul class="right">
+            <li class="active"><a href="/">Go to Root</a></li>
+            <li class="has-form">
+                <div class="row collapse">
+                    <div class="small-9 columns">
+                        <input type="text" placeholder="Name or Regex">
+                    </div>
+                    <div class="small-3 columns">
+                        <a href="#" class="button expand">Search</a>
+                    </div>
+                </div>
+            </li>
+            <li class="has-form">
+                <div class="row collapse">
+                    <div class="small-12 columns">
+                        <input type="checkbox" id="search-files" checked>
+                        <label for="search-files">Search Files</label>
+                    </div>
+                </div>
+            </li>
+            <li class="has-form">
+                <div class="row collapse">
+                    <div class="small-12 columns">
+                        <input type="checkbox" id="search-directories" checked>
+                        <label for="search-directories">Search Directories</label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</nav>
+{{ end }}

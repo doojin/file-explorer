@@ -1,0 +1,28 @@
+.top-bar label { color: #FFFFFF; }
+
+.content { margin: 20px; }
+
+.path {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+li.dir, li.file {
+    height: 22px;
+    line-height: 22px;
+    list-style-type: none;
+}
+li.dir:before, li.file:before {
+    background-image: url('/img/icon_sprite.png');
+    background-repeat: no-repeat;
+    content: "";
+    display: inline-block;
+    height: 22px;
+    margin-right: 10px;
+    width: 22px;
+}
+
+li.dir a, li.file a { color: #2C5B5C; }
+
+li.file:before { background-position: -23px 0; }
+li.dir:before { background-position: 0 0; }

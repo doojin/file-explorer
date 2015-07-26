@@ -17,6 +17,9 @@ import (
 
 var logger = logging.MustGetLogger("HTTP Server")
 
+var cssDir = "./server/templates/resources/css/"
+var imgDir = "./server/templates/resources/img/"
+
 // A simple HTTP server
 type Server struct {
 	Config ServerConfig
@@ -70,6 +73,11 @@ func (server *Server) registerRoutes(router *mux.Router) {
 	}
 
 	scanDirController := controller.NewScanController(encoder)
+
+	router.PathPrefix("/css/").Handler(
+		http.StripPrefix("/css/", http.FileServer(http.Dir(cssDir))))
+	router.PathPrefix("/img/").Handler(
+		http.StripPrefix("/img/", http.FileServer(http.Dir(imgDir))))
 
 	router.HandleFunc("/", scanDirController.HomeHandler)
 	router.HandleFunc("/scan/{dir}/", scanDirController.ScanHandler)

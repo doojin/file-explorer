@@ -2,8 +2,14 @@
 <html>
 <head>
     <title>File Explorer</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.foundation5.zurb.com/foundation.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-    {{ template "Content" }}
+    {{ template "Navigation" }}
+
+    <section class="content">
+        {{ template "Content" }}
+    </section>
 </body>
 </html>

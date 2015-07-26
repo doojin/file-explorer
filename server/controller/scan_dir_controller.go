@@ -22,7 +22,8 @@ func NewScanController(encoder crypto.Encoder) (controller scanController) {
 func (controller *scanController) HomeHandler(w http.ResponseWriter, r *http.Request) {
 	tpl, err := template.ParseFiles(
 		"server/templates/layout.html",
-		"server/templates/content/homepage.html",
+		"server/templates/navigation.html",
+		"server/templates/content/scan_result.html",
 	)
 	if err != nil {
 		panic(err)
@@ -34,6 +35,7 @@ func (controller *scanController) HomeHandler(w http.ResponseWriter, r *http.Req
 func (controller *scanController) ScanHandler(w http.ResponseWriter, r *http.Request) {
 	tpl, err := template.ParseFiles(
 		"server/templates/layout.html",
+		"server/templates/navigation.html",
 		"server/templates/content/scan_result.html",
 	)
 	if err != nil {
@@ -46,6 +48,7 @@ func (controller *scanController) ScanHandler(w http.ResponseWriter, r *http.Req
 func (controller *scanController) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	tpl, err := template.ParseFiles(
 		"server/templates/layout.html",
+		"server/templates/navigation.html",
 		"server/templates/content/search_result.html",
 	)
 	if err != nil {
