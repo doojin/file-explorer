@@ -331,3 +331,56 @@ func Test_buildPath_ShouldBuildEntityPathCorrectly(t *testing.T) {
 	assert.Equal(t, "C:/subdir/file.txt", buildPath("C:/subdir", "file.txt"))
 	assert.Equal(t, "C:/subdir/file.txt", buildPath("C:/subdir/", "file.txt"))
 }
+
+func Test_matchedEntities_ShouldMatchFilesAndFoldersByName(t *testing.T) {
+	directories := []Directory{
+		Directory{Name: "MatchedEntity"},
+		Directory{Name: "NotMatched_Entity"},
+	}
+	files := []File{
+		File{Name: "MatchedEntity"},
+		File{Name: "NotMatched_Entity"},
+	}
+
+	resultDirectories, resultFiles := matchedEntities(directories, files, "chedEn")
+
+	expectedDirectories := []Directory{
+		Directory{Name: "MatchedEntity"},
+	}
+	expectedFiles := []File{
+		File{Name: "MatchedEntity"},
+	}
+	assert.Equal(t, expectedDirectories, resultDirectories)
+	assert.Equal(t, expectedFiles, resultFiles)
+}
+
+func Test_FindEntities_ShouldFindMatchedEntities(t *testing.T) {
+	os.Mkdir("rootDir", 777)
+	os.Mkdir("rootDir/dir1", 777)
+	os.Mkdir("rootDir/dummy", 777)
+	os.Mkdir("rootDir/dir3", 777)
+	file1, _ := os.Create("rootDir/dir1/dummy.txt")
+	file2, _ := os.Create("rootDir/dummy/file2.txt")
+	file3, _ := os.Create("rootDir/dir3/file3.txt")
+	file4, _ := os.Create("rootDir/duMmy.txt")
+	defer func() {
+		file1.Close()
+		file2.Close()
+		file3.Close()
+		file4.Close()
+		os.RemoveAll("rootDir")
+	}()
+	explorer := new(Explorer)
+
+	files, directories := explorer.FindEntities("rootDir", "dummy", 0, 0)
+
+	expectedFiles := []File{
+		File{Name: "duMmy.txt", Path: "rootDir/duMmy.txt", Size: 0},
+		File{Name: "dummy.txt", Path: "rootDir/dir1/dummy.txt", Size: 0},
+	}
+	expectedDirectories := []Directory{
+		Directory{Name: "dummy", Path: "rootDir/dummy"},
+	}
+	assert.Equal(t, expectedFiles, files)
+	assert.Equal(t, expectedDirectories, directories)
+}

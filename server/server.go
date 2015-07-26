@@ -73,7 +73,10 @@ func (server *Server) registerRoutes(router *mux.Router) {
 		panic(err)
 	}
 
-	scanDirController := controller.NewScanController(encoder, explorer.New(server.Config.RootDir))
+	scanDirController := controller.NewScanController(
+		encoder,
+		explorer.New(server.Config.RootDir),
+	)
 
 	router.PathPrefix("/css/").Handler(
 		http.StripPrefix("/css/", http.FileServer(http.Dir(cssDir))))
@@ -82,5 +85,5 @@ func (server *Server) registerRoutes(router *mux.Router) {
 
 	router.HandleFunc("/", scanDirController.HomeHandler)
 	router.HandleFunc("/scan/{dir}/", scanDirController.ScanHandler)
-	router.HandleFunc("/search/{entity}/", scanDirController.SearchHandler)
+	router.HandleFunc("/search/", scanDirController.SearchHandler)
 }

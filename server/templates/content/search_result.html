@@ -1,22 +1,11 @@
 {{ define "Content" }}
 <ul>
-    <li class="dir">
-        <a href="#">C:/Programs and Files/subdir1</a>
-    </li>
-    <li class="dir">
-        <a href="#">C:/Programs and Files/subdir2</a>
-    </li>
-    <li class="dir">
-        <a href="#">C:/Programs and Files/subdir3</a>
-    </li>
-    <li class="file">
-        <a href="#">C:/Programs and Files/file1</a>
-    </li>
-    <li class="file">
-        <a href="#">C:/Programs and Files/file2</a>
-    </li>
-    <li class="file">
-        <a href="#">C:/Programs and Files/file3</a>
-    </li>
+    {{ range .Directories }}
+        <li class="dir">{{ .Path }}</li>
+    {{ end }}
+
+    {{ range .Files }}
+        <li class="file">{{ .Path }} <span class="file-size">({{ .Size }} bytes)</span></li>
+    {{ end }}
 </ul>
 {{ end }}

@@ -62,7 +62,12 @@ func (controller *scanController) ScanHandler(w http.ResponseWriter, r *http.Req
 		panic(err)
 	}
 	currentDir, _ := controller.encoder.Decrypt(vars[current_dir])
-	directories, _ := controller.explorer.Directories(currentDir)
+	directories, err := controller.explorer.Directories(currentDir)
+	// Nice try tho..
+	if err == explorer.ERR_OUT_OF_ROOT {
+		http.Redirect(w, r, "/", 302)
+		return
+	}
 	files, _ := controller.explorer.Files(currentDir)
 	files, directories = controller.encodeEntities(files, directories)
 	parentDir, _ := controller.encoder.Encrypt(
@@ -78,6 +83,9 @@ func (controller *scanController) ScanHandler(w http.ResponseWriter, r *http.Req
 
 // SearchHandler serves file and directory search requests
 func (controller *scanController) SearchHandler(w http.ResponseWriter, r *http.Request) {
+	entityName := r.FormValue("entity-name")
+	dirFlag := r.FormValue("dirFlag")
+	fileFlag := r.FormValue("fileFlag")
 	tpl, err := template.ParseFiles(
 		"server/templates/layout.html",
 		"server/templates/navigation.html",
@@ -86,7 +94,24 @@ func (controller *scanController) SearchHandler(w http.ResponseWriter, r *http.R
 	if err != nil {
 		panic(err)
 	}
-	tpl.Execute(w, []interface{}{})
+	files, directories := controller.explorer.FindEntities(
+		controller.explorer.Root,
+		entityName,
+		0,
+		0,
+	)
+	// Removing files from search
+	if fileFlag != "yes" {
+		files = []explorer.File{}
+	}
+	// Removing directories from search
+	if dirFlag != "yes" {
+		directories = []explorer.Directory{}
+	}
+	tpl.Execute(w, map[string]interface{}{
+		"Files": files,
+		"Directories": directories,
+	})
 }
 
 func (controller *scanController) encodeEntities(files []explorer.File,

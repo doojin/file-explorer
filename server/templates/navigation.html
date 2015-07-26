@@ -7,35 +7,39 @@
     </ul>
 
     <section class="top-bar-section">
-        <ul class="right">
-            <li class="active"><a href="/">Go to Root</a></li>
-            <li class="has-form">
-                <div class="row collapse">
-                    <div class="small-9 columns">
-                        <input type="text" placeholder="Name or Regex">
+        <form action="/search/" method="POST" id="search-form">
+            <ul class="right">
+                <li class="active"><a href="/">Go to Root</a></li>
+                <li class="has-form">
+                    <div class="row collapse">
+                        <div class="small-9 columns">
+                            <input type="text" placeholder="Name" name="entity-name">
+                        </div>
+                        <div class="small-3 columns">
+                            <div class="button expand" onclick="document.getElementById('search-form').submit();">
+                                Search
+                            </div>
+                        </div>
                     </div>
-                    <div class="small-3 columns">
-                        <a href="#" class="button expand">Search</a>
+                </li>
+                <li class="has-form">
+                    <div class="row collapse">
+                        <div class="small-12 columns">
+                            <input type="checkbox" name="fileFlag" value="yes" id="search-files" checked>
+                            <label for="search-files">Search Files</label>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <li class="has-form">
-                <div class="row collapse">
-                    <div class="small-12 columns">
-                        <input type="checkbox" id="search-files" checked>
-                        <label for="search-files">Search Files</label>
+                </li>
+                <li class="has-form">
+                    <div class="row collapse">
+                        <div class="small-12 columns">
+                            <input type="checkbox" name="dirFlag" value="yes" id="search-directories" checked>
+                            <label for="search-directories">Search Directories</label>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <li class="has-form">
-                <div class="row collapse">
-                    <div class="small-12 columns">
-                        <input type="checkbox" id="search-directories" checked>
-                        <label for="search-directories">Search Directories</label>
-                    </div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </form>
     </section>
 </nav>
 {{ end }}

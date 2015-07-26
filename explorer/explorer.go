@@ -73,6 +73,46 @@ func (explorer *Explorer) checkLevel(path string) (err error) {
 	return
 }
 
+// FindEntities searches for files and folders with specified name
+func (explorer *Explorer) FindEntities(path string, name string, level int, currentLevel int) (resultFiles []File, resultDirectories []Directory) {
+	// In current dir
+	directories, _ := explorer.Directories(path)
+	files, _ := explorer.Files(path)
+	matchedDirectories, matchedFiles := matchedEntities(directories, files, name)
+
+	// Appending matched
+	resultFiles = append(resultFiles, matchedFiles...)
+	resultDirectories = append(resultDirectories, matchedDirectories...)
+
+	// In subdirectories
+	for _, subDirectory := range directories {
+		matchedFiles, matchedDirectories = explorer.FindEntities(subDirectory.Path, name, level, currentLevel+1)
+		resultFiles = append(resultFiles, matchedFiles...)
+		resultDirectories = append(resultDirectories, matchedDirectories...)
+	}
+
+	return
+}
+
+func matchedEntities(directories []Directory, files []File, name string) (matchedDirectories []Directory, matchedFiles []File) {
+	name = strings.ToLower(name)
+	// Matching directories
+	for _, directory := range directories {
+		dirName := strings.ToLower(directory.Name)
+		if strings.Contains(dirName, name) {
+			matchedDirectories = append(matchedDirectories, directory)
+		}
+	}
+	// Matching files
+	for _, file := range files {
+		fileName := strings.ToLower(file.Name)
+		if strings.Contains(fileName, name) {
+			matchedFiles = append(matchedFiles, file)
+		}
+	}
+	return
+}
+
 func filterDirectories(entities []os.FileInfo, path string) (directories []Directory) {
 	for _, entity := range entities {
 		if entity.IsDir() {
