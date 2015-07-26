@@ -1,28 +1,24 @@
 {{ define "Content" }}
     <div class="path">
-        C:/Program and Files/Windows Programs/
+        {{ .Path }}
     </div>
     <ul>
+
         <li class="dir">
-            <a href="#">..</a>
+            <a href="/scan/{{ .Parent }}/">..</a>
         </li>
+
+        {{ range .Directories }}
         <li class="dir">
-            <a href="#">subdir1</a>
+            <a href="/scan/{{ .Path }}/">{{ .Name }}</a>
         </li>
-        <li class="dir">
-            <a href="#">subdir2</a>
-        </li>
-        <li class="dir">
-            <a href="#">subdir3</a>
-        </li>
+        {{ end }}
+
+        {{ range .Files }}
         <li class="file">
-            <a href="#">file1</a>
+            {{ .Name }} <span class="file-size">({{ .Size }} bytes)</span>
         </li>
-        <li class="file">
-            <a href="#">file2</a>
-        </li>
-        <li class="file">
-            <a href="#">file3</a>
-        </li>
+        {{ end }}
+
     </ul>
 {{ end }}

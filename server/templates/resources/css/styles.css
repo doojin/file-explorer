@@ -26,3 +26,8 @@ li.dir a, li.file a { color: #2C5B5C; }
 
 li.file:before { background-position: -23px 0; }
 li.dir:before { background-position: 0 0; }
+
+.file-size {
+    color: #AAAAAA;
+    font-size: 11px;
+}

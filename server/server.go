@@ -13,6 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"github.com/doojin/file-explorer/crypto"
 	"github.com/doojin/file-explorer/server/controller"
+	"github.com/doojin/file-explorer/explorer"
 )
 
 var logger = logging.MustGetLogger("HTTP Server")
@@ -72,7 +73,7 @@ func (server *Server) registerRoutes(router *mux.Router) {
 		panic(err)
 	}
 
-	scanDirController := controller.NewScanController(encoder)
+	scanDirController := controller.NewScanController(encoder, explorer.New(server.Config.RootDir))
 
 	router.PathPrefix("/css/").Handler(
 		http.StripPrefix("/css/", http.FileServer(http.Dir(cssDir))))
