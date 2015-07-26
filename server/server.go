@@ -11,6 +11,8 @@ import (
 	"github.com/op/go-logging"
 	"encoding/json"
 	"gopkg.in/yaml.v2"
+	"github.com/doojin/file-explorer/crypto"
+	"github.com/doojin/file-explorer/server/controller"
 )
 
 var logger = logging.MustGetLogger("HTTP Server")
@@ -23,6 +25,8 @@ type Server struct {
 // Start runs server with configuration from server config
 func (server *Server) Start() {
 	r := mux.NewRouter()
+	server.registerRoutes(r)
+
 	http.Handle("/", r)
 	logger.Info("HTTP server is starting using port: %v", server.Config.Port)
 	http.ListenAndServe(server.port(), nil)
@@ -56,4 +60,18 @@ func (server *Server) readConfig(filename string) []byte {
 		logger.Fatalf("Cannot read file %v: %v", filename, err)
 	}
 	return fileContent
+}
+
+func (server *Server) registerRoutes(router *mux.Router) {
+	key := server.Config.Key
+	encoder, err := crypto.NewEncoder(key)
+	if err != nil {
+		panic(err)
+	}
+
+	scanDirController := controller.NewScanController(encoder)
+
+	router.HandleFunc("/", scanDirController.HomeHandler)
+	router.HandleFunc("/scan/{dir}/", scanDirController.ScanHandler)
+	router.HandleFunc("/search/{entity}/", scanDirController.SearchHandler)
 }
