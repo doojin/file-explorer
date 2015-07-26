@@ -1,0 +1,6 @@
+<config>
+    <port>1234</port>
+    <key>1234567890123456</key>
+    <root>C:/gopath</root>
+    <goroutineLevels>2</goroutineLevels>
+</config>
